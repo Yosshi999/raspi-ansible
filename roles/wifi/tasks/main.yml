@@ -1,0 +1,34 @@
+- name: Change locale
+  shell: "raspi-config nonint do_change_locale {{ locale }}"
+
+- name: Change timezone
+  shell: "raspi-config nonint do_change_timezone {{ timezone }}"
+
+- name: Set WiFi country
+  shell: "raspi-config nonint do_wifi_country {{ wifi_country }}"
+
+- name: Connect wifi
+  blockinfile:
+    path: /etc/wpa_supplicant/wpa_supplicant.conf
+    block: |
+      network={
+          ssid="{{ wifi_ssid }}"
+          psk="{{ wifi_psk }}"
+      }
+
+- name: Make IP static
+  blockinfile:
+    path: /etc/dhcpcd.conf
+    block: |
+      interface eth0
+          metric 200
+      interface wlan0
+          metric 100
+      {% if wifi_isStatic %}
+          static ip_address={{ wifi_static_ip }}
+          static routers={{ wifi_router_ip }}
+          static domain_name_servers={{ wifi_dns_ip }}
+      {% endif %}
+
+- name: restart wifi
+  shell: 'wpa_cli -i wlan0 reconfigure'

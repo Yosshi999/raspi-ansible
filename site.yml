@@ -1,0 +1,9 @@
+- name: Setup Raspberry Pi
+  hosts: raspi
+  roles:
+    - role: wifi
+      ansible_become: yes
+    - role: apt
+      ansible_become: yes
+    - role: sshd
+      ansible_become: yes

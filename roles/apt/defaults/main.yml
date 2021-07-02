@@ -1,0 +1,6 @@
+apt:
+  packages:
+    - name: make
+    - name: build-essential
+    - name: git
+    - name: vim

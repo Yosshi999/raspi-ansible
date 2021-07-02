@@ -1,0 +1,36 @@
+- name: change ssh port
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#Port '
+    line: 'Port {{ new_ssh_port }}'
+
+- name: deny password
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#PasswordAuthentication '
+    line: 'PasswordAuthentication no'
+
+- name: deny root login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin '
+    line: 'PermitRootLogin no'
+
+- name: create .ssh directory
+  file:
+    path: /home/pi/.ssh
+    state: directory
+    mode: '0700'
+    owner: pi
+    group: pi
+
+- name: copy public key
+  copy:
+    src: '{{ new_ssh_pubkey }}'
+    dest: /home/pi/.ssh/authorized_keys
+    mode: '0600'
+    owner: pi
+    group: pi
+
+- name: restart sshd
+  shell: '/etc/init.d/ssh restart'
