@@ -19,3 +19,5 @@ wifi_isStatic=True
 wifi_static_ip=xx.xx.xx.xx/xx
 wifi_router_ip=xx.xx.xx.xx
 wifi_dns_ip=xx.xx.xx.xx
+
+python_version=3.9.6

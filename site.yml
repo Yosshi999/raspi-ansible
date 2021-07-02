@@ -5,5 +5,6 @@
       ansible_become: yes
     - role: apt
       ansible_become: yes
+    - role: python
     - role: sshd
       ansible_become: yes
